@@ -3,6 +3,4 @@
     define("DB_PASSWORD","root");
     define("HOST", "localhost");
     define("DB_NAME", "web_service_back_front");
-
-
 ?>
