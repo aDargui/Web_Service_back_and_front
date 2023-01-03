@@ -6,6 +6,7 @@
  * site Web : adargui.fr
  */
 class userEntity{
+    
 }
 
 ?>
