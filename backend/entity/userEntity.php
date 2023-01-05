@@ -62,6 +62,9 @@ class userEntity{
     function getSexe() { 
             return $this->sexe; 
     } 
+    function setSexe($sexe) {  
+        $this->sexe = $sexe; 
+    } 
 
     function getPassword() { 
             return $this->password; 
