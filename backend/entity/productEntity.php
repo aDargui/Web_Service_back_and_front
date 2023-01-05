@@ -78,6 +78,7 @@ class productEntity{
    function setCreatedAt($createdAt) {  
        $this->createdAt = $createdAt; 
    } 
+
 }
 
 ?>
