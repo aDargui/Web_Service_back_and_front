@@ -95,7 +95,7 @@ class DataLayer{
         }
     }
 
-    function createOrder(ordersEntity $order){
+    function createOrder(OrdersEntity $order){
         $sql = "INSERT INTO `orders`(`idUser`, `idProduct`, `quantity`, `price`) VALUES (:idUser,:idProduct,:quantity,:price)";
         $result = $this->connexion->prepare($sql);
             $data = $result->execute(array(
@@ -116,17 +116,18 @@ class DataLayer{
             return $th;
         }
     }
+
     /* READ */
     function getUsers(){
-        $sql = 'SELECT * FROM `api_web_services`.`user`';
+        $sql = 'SELECT * FROM `'.DB_NAME.'`.`user`';
         
         try {
             $result = $this->connexion->prepare($sql);
             $var = $result->execute();
-            // $data = $result->fetchAll();
+            //$data = $result->fetchAll();
             $users = [];
             while($data = $result->fetch(PDO::FETCH_OBJ)){
-                $user = new userEntity();
+                $user = new UserEntity();
                 $user->setIdUser($data->id);
                 $user->setSexe($data->sexe);
                 $user->setPseudo($data->pseudo);
@@ -152,7 +153,7 @@ class DataLayer{
     }
 
     function getCategory(){
-        $sql = 'SELECT * FROM `api_web_services`.`category`';
+        $sql = 'SELECT * FROM `'.DB_NAME.'`.`category`';
         
         try {
             $result = $this->connexion->prepare($sql);
@@ -160,7 +161,8 @@ class DataLayer{
             // $data = $result->fetchAll();
             $categories = [];
             while($data = $result->fetch(PDO::FETCH_OBJ)){
-                $category = new categoryEntity();
+                $category = new CategoryEntity();
+                print_r($data);
                 $category->setIdCategory($data->id);
                 $category->setName($data->name);
                 $categories[] = $category;
@@ -178,7 +180,7 @@ class DataLayer{
     }
 
     function getProduct(){
-        $sql = 'SELECT * FROM `api_web_services`.`product`';
+        $sql = 'SELECT * FROM `'.DB_NAME.'`.`product`';
         
         try {
             $result = $this->connexion->prepare($sql);
@@ -199,8 +201,6 @@ class DataLayer{
                 
                 $products[] = $product;
 
-                
-
             }
             if($products){
                 return $products;
@@ -215,7 +215,7 @@ class DataLayer{
     }
 
     function getOrders(){
-        $sql = 'SELECT * FROM `api_web_services`.`orders`';
+        $sql = 'SELECT * FROM `'.DB_NAME.'`.`orders`';
         
         try {
             $result = $this->connexion->prepare($sql);
@@ -226,8 +226,8 @@ class DataLayer{
                 // print_r($data);exit();
                 $order = new ordersEntity();
                 $order->setIdOrder($data->id);
-                $order->setIdUser($data->idUser);
-                $order->setIdProduct($data->idProduct);
+                $order->setIdUser($data->id_user);
+                $order->setIdProduct($data->id_product);
                 $order->setQuantity($data->quantity);
                 $order->setPrice($data->price);
                 $order->setCreated_at($data->createdat);
@@ -250,7 +250,7 @@ class DataLayer{
     /* UPDATE */
 
     function updateUsers(UserEntity $user){
-        $sql = "UPDATE `api_web_services`.`user` SET ";
+        $sql = "UPDATE `'.DB_NAME.'`.`user` SET ";
         try {
             $sql .=" pseudo = '".$user->getPseudo()."',";
             $sql .=" email = '".$user->getEmail()."',";
@@ -276,7 +276,7 @@ class DataLayer{
     }
 
     function updateCategory(CategoryEntity $category){
-        $sql = "UPDATE `api_web_services`.`category` SET ";
+        $sql = "UPDATE `'.DB_NAME.'`.`category` SET ";
         try {
             $sql .=" name = '".$category->getName()."',";            
             $sql .=" WHERE id=".$category->getIdCategory();
@@ -295,7 +295,7 @@ class DataLayer{
     }
 
     function updateProduct(ProductEntity $product){
-        $sql = "UPDATE `api_web_services`.`product` SET ";
+        $sql = "UPDATE `'.DB_NAME.'`.`product` SET ";
         try {
             $sql .=" name = '".$product->getName()."',";
             $sql .=" description = '".$product->getDescription()."',";
@@ -315,7 +315,7 @@ class DataLayer{
     }
 
     function updateOrders(ordersEntity $order){
-        $sql = "UPDATE `api_web_services`.`product` SET ";
+        $sql = "UPDATE `'.DB_NAME.'`.`product` SET ";
         try {
             $sql .=" idUser = '".$order->getIdUser()."',";
             $sql .=" idProduct = '".$order->getIdProduct()."',";
