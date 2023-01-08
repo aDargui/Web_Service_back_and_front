@@ -25,9 +25,16 @@ class DataLayer{
 
     /* functions CREATE*/
 
+    /**
+     * Methode permetant de créer un utilisateur en DB
+     *
+     * @param UserEntity $user //Objet métier décrivant un utilisateur
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function createUser(UserEntity $user){
         $sql = "INSERT INTO user (sexe,pseudo,lastname,firstname,tel,email,password,description,adresse_facturation,adresse_livraison) VALUES (:sexe,:pseudo,:firstname,:lastname,:tel,:email,:password,:description,:adresse_facturation,:adresse_livraison)";
-
         try{
             $result = $this->connexion->prepare($sql);
             $data = $result->execute(array(
@@ -52,6 +59,14 @@ class DataLayer{
         }
     }
 
+    /**
+     * Methode permetant de créer une categorie en DB
+     *
+     * @param UserEntity $user //Objet métier décrivant une categorie
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function createCategory(CategoryEntity $category){
         $sql = "INSERT INTO `category`(`name`) VALUES (:name)";
         $result = $this->connexion->prepare($sql);
@@ -71,6 +86,14 @@ class DataLayer{
         }
     }
 
+    /**
+     * Methode permetant de créer un produit en DB
+     *
+     * @param UserEntity $user //Objet métier décrivant un produit
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function createProduct(ProductEntity $product){
         $sql = "INSERT INTO `product`(`name`, `description`, `price`, `stock`, `category`, `image`) VALUES (:name,:description,:price,:stock,:category,:image)";
         $result = $this->connexion->prepare($sql);
@@ -95,6 +118,14 @@ class DataLayer{
         }
     }
 
+    /**
+     * Methode permetant de créer une commande en DB
+     *
+     * @param UserEntity $user //Objet métier décrivant une commande
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function createOrder(OrdersEntity $order){
         $sql = "INSERT INTO `orders`(`idUser`, `idProduct`, `quantity`, `price`) VALUES (:idUser,:idProduct,:quantity,:price)";
         $result = $this->connexion->prepare($sql);
@@ -118,6 +149,15 @@ class DataLayer{
     }
 
     /* READ */
+
+    /**
+     * Methode permettant de récupérer les utilisateur dans BD 
+     * 
+     * @param VOID ne prend pas de paramètre
+     * @return ARRAY Tableau contenant les données utilisateurs
+     * @return FALSE Echec de la persistance
+     * @return NULL Exception déclenchée
+     */
     function getUsers(){
         $sql = 'SELECT * FROM `'.DB_NAME.'`.`user`';
         
@@ -137,8 +177,6 @@ class DataLayer{
                 $user->setEmail($data->email);
                 $users[] = $user;
 
-                
-
             }
             if($users){
                 return $users;
@@ -152,6 +190,14 @@ class DataLayer{
         
     }
 
+    /**
+     * Methode permettant de récupérer les catégories dans BD 
+     * 
+     * @param VOID ne prend pas de paramètre
+     * @return ARRAY Tableau contenant les catégories
+     * @return FALSE Echec de la persistance
+     * @return NULL Exception déclenchée
+     */
     function getCategory(){
         $sql = 'SELECT * FROM `'.DB_NAME.'`.`category`';
         
@@ -162,7 +208,6 @@ class DataLayer{
             $categories = [];
             while($data = $result->fetch(PDO::FETCH_OBJ)){
                 $category = new CategoryEntity();
-                print_r($data);
                 $category->setIdCategory($data->id);
                 $category->setName($data->name);
                 $categories[] = $category;
@@ -179,6 +224,13 @@ class DataLayer{
         
     }
 
+    /**
+     * Methode permettant de récupérer les produits dans BD 
+     * @param VOID ne prend pas de paramètre
+     * @return ARRAY Tableau contenant les produits
+     * @return FALSE Echec de la persistance
+     * @return NULL Exception déclenchée
+     */
     function getProduct(){
         $sql = 'SELECT * FROM `'.DB_NAME.'`.`product`';
         
@@ -214,6 +266,13 @@ class DataLayer{
         
     }
 
+    /**
+     * Methode permettant de récupérer les commandes dans BD 
+     * @param VOID ne prend pas de paramètre
+     * @return ARRAY Tableau contenant les commande
+     * @return FALSE Echec de la persistance
+     * @return NULL Exception déclenchée
+     */
     function getOrders(){
         $sql = 'SELECT * FROM `'.DB_NAME.'`.`orders`';
         
@@ -248,9 +307,16 @@ class DataLayer{
     }
 
     /* UPDATE */
-
+    /**
+     * Methode permettant de mettre à jour une utilisateur dans DB
+     *
+     * @param UserEntity $user //Objet métier décrivant un utilisateur
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function updateUsers(UserEntity $user){
-        $sql = "UPDATE `'.DB_NAME.'`.`user` SET ";
+        $sql = "UPDATE `".DB_NAME."`.`user` SET ";
         try {
             $sql .=" pseudo = '".$user->getPseudo()."',";
             $sql .=" email = '".$user->getEmail()."',";
@@ -259,10 +325,12 @@ class DataLayer{
             $sql .=" firstname = '".$user->getFirstname()."',";
             $sql .=" tel= '".$user->getTel()."',";
             $sql .=" adresse_facturation= '".$user->getAdressefacturation()."',";
-            $sql .=" adresse_livraison= '".$user->getAdresseLivraison()."',";            
+            $sql .=" adresse_livraison= '".$user->getAdresseLivraison()."'";            
             $sql .=" WHERE id=".$user->getIdUser();
+            // print_r($sql);exit();
             $result = $this->connexion->prepare($sql);
             $var = $result->execute();
+            
             // print_r($var);
             if($var){
                 return TRUE;
@@ -270,15 +338,24 @@ class DataLayer{
                 return FALSE;
             }
         } catch (PDOException $th) {
-            return NULL;
+            //return NULL;
+            return $th;
         }
 
     }
 
+    /**
+     * Methode permettant de mettre à jour une catégorie dans DB
+     *
+     * @param CategoryEntity $category //Objet métier décrivant une categorie
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function updateCategory(CategoryEntity $category){
-        $sql = "UPDATE `'.DB_NAME.'`.`category` SET ";
+        $sql = "UPDATE `".DB_NAME."`.`category` SET ";
         try {
-            $sql .=" name = '".$category->getName()."',";            
+            $sql .=" name = '".$category->getName()."'";            
             $sql .=" WHERE id=".$category->getIdCategory();
             $result = $this->connexion->prepare($sql);
             $var = $result->execute();
@@ -294,16 +371,45 @@ class DataLayer{
 
     }
 
+    /**
+     * Methode permettant de mettre à jour un produit dans DB
+     *
+     * @param ProductEntity $product //Objet métier décrivant un produit
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function updateProduct(ProductEntity $product){
-        $sql = "UPDATE `'.DB_NAME.'`.`product` SET ";
+        $sql = "UPDATE `".DB_NAME."`.`product` SET ";
+
+        //Methode 2
+        /*
+        $sql = "UPDATE `".DB_NAME."`.`product` SET `name`=:name,`description`=:description,`price`=:price,
+        `stock`=:stock,`category`=:category,`image`=:image WHERE id=:id";
+        */
         try {
             $sql .=" name = '".$product->getName()."',";
             $sql .=" description = '".$product->getDescription()."',";
             $sql .=" category = '".$product->getCategory()."',";
-            $sql .=" image = '".$product->getImage()."',";
+            $sql .=" image = '".$product->getImage()."'";
+            $sql .=" WHERE id=".$product->getIdProduit();
             $result = $this->connexion->prepare($sql);
             $var = $result->execute();
             // print_r($var);
+            /*
+            Methode 2:
+            $result = $this->connexion->prepare($sql);
+            $var = $result->execute(array(
+                ':id' => $product->getIdproduct(),
+                ':name' => $product->getName(),
+                ':description' => $product->getDescription(),
+                ':price' => $product->getPrice(),
+                ':stock' => $product->getStock(),
+                ':category' => $product->getCategory(),
+                ':image'=>$product->getImage()
+               
+            ));
+            */
             if($var){
                 return TRUE;
             }else{
@@ -314,13 +420,22 @@ class DataLayer{
         }
     }
 
+    /**
+     * Methode permettant de mettre à jour une commande dans DB
+     *
+     * @param ordersEntity $order //Objet métier décrivant une commande
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function updateOrders(ordersEntity $order){
-        $sql = "UPDATE `'.DB_NAME.'`.`product` SET ";
+        $sql = "UPDATE `".DB_NAME."`.`product` SET ";
         try {
             $sql .=" idUser = '".$order->getIdUser()."',";
             $sql .=" idProduct = '".$order->getIdProduct()."',";
             $sql .=" quantity = '".$order->getQuantity()."',";
-            $sql .=" price = '".$order->getPrice()."',";
+            $sql .=" price = '".$order->getPrice()."'";
+            $sql .=" WHERE id=".$order->getIdOrder();
             $result = $this->connexion->prepare($sql);
             $var = $result->execute();
             // print_r($var);
@@ -336,7 +451,14 @@ class DataLayer{
     }
 
     /* DELETE */
-
+    /**
+     * Methode permettant de supprimer un utilisateur dans DB
+     *
+     * @param ProductEntity $product //Objet métier décrivant un utilisateur
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function deleteUsers(UserEntity $user){
         $sql = "DELETE FROM `user` WHERE id=".$user->getIdUser();
         
@@ -354,6 +476,14 @@ class DataLayer{
 
     }
 
+    /**
+     * Methode permettant de supprimer une categorie dans DB
+     *
+     * @param ProductEntity $product //Objet métier décrivant une categorie
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function deleteCategory(CategoryEntity $category){
         $sql = "DELETE FROM `category` WHERE id=".$category->getIdCategory();
         
@@ -371,6 +501,14 @@ class DataLayer{
 
     }
 
+    /**
+     * Methode permettant de supprimer un produit dans DB
+     *
+     * @param ProductEntity $product //Objet métier décrivant un produit
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function deleteProduct(ProductEntity $product){
         $sql = "DELETE FROM `product` WHERE id=".$product->getIdProduit();
         
@@ -388,6 +526,14 @@ class DataLayer{
 
     }
 
+    /**
+     * Methode permettant de supprimer une commande dans DB
+     *
+     * @param ProductEntity $product //Objet métier décrivant une commande
+     * @return TRUE Mise à jour réussie
+     * @return FALSE Echec de la mise à jour
+     * @return NULL exception déclenchée
+     */
     function deleteOrders(ordersEntity $order){
         $sql = "DELETE FROM `orders` WHERE id=".$order->getIdOrder();
         

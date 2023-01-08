@@ -18,7 +18,26 @@ $db = new DataLayer();
 // $product = $db->getproduct();
 // var_dump($product);
 
-$orders = $db->getorders();
-var_dump($orders);
+// $orders = $db->getorders();
+// var_dump($orders);
+
+$user = new userEntity();
+
+// $user->setPseudo("motivation");
+// $user->setEmail("motivation3@gmail.com");
+// $user->setFirstname("Abdel");
+// $user->setLastname('Dargui');
+// $user->setSexe(1);
+// $user->setAdressefacturation('adresse facturation');
+// $user->setAdresselivraison("adresse livraison");
+// $user->setTel('0754545454');
+// $user->setDescription('test');
+// $user->setPassword('123456789');
+$user->setIdUser(45);
+
+//$var = $db->updateUsers($user);
+//$var = $db->createUser($user);
+$var = $db->deleteUsers($user);
+var_dump($var);
 
 ?>
