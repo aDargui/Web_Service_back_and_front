@@ -24,7 +24,7 @@ $db = new DataLayer();
 $user = new userEntity();
 
 // $user->setPseudo("motivation");
-// $user->setEmail("motivation3@gmail.com");
+$user->setEmail("motivation4@gmail.com");
 // $user->setFirstname("Abdel");
 // $user->setLastname('Dargui');
 // $user->setSexe(1);
@@ -32,12 +32,14 @@ $user = new userEntity();
 // $user->setAdresselivraison("adresse livraison");
 // $user->setTel('0754545454');
 // $user->setDescription('test');
-// $user->setPassword('123456789');
-$user->setIdUser(45);
+$user->setPassword('123456789');
+//$user->setIdUser(45);
 
 //$var = $db->updateUsers($user);
 //$var = $db->createUser($user);
-$var = $db->deleteUsers($user);
+//$var = $db->deleteUsers($user);
+
+$var = $db->authentifier($user);
 var_dump($var);
 
 ?>

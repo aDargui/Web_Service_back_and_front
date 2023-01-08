@@ -20,6 +20,48 @@ class DataLayer{
             die('erreur ['.$err->getCode().'] '.$err->getMessage());
         }
     }
+    /**
+     * Methode permetant d'authentifier un utilisateur
+     *
+     * @param userEntity $user //Objet metier décrivant un utilisateur
+     * @return Array UserEntity $user Objet métier décrivant l'utilisateur authentifié
+     * @return FALSE En cas d'échec d'authentification
+     * @return NULL Exception déclenchée
+     */
+    function authentifier(userEntity $user){
+        $sql = 'SELECT * FROM `'.DB_NAME.'`.`user` WHERE email= :email';
+
+        try {
+            $result = $this->connexion->prepare($sql);
+            $var = $result->execute(array(
+                ':email' => $user->getEmail()
+            ));
+
+            $data = $result->fetch(PDO::FETCH_OBJ);
+            if($data && ($data->password == sha1($user->getPassword()))){
+                // Authentification reussie
+                $user->setIdUser($data->id);
+                $user->setSexe($data->sexe);
+                $user->setFirstname($data->firstname);
+                $user->setLastname($data->lastname);
+                $user->setPassword('');
+                $user->setAdressefacturation($data->adresse_facturation);
+                $user->setAdresselivraison($data->adresse_livraison);
+                $user->setDescription($data->description);
+                $user->setTel($data->tel);
+
+                return $user;
+                
+
+            }else{
+                //authentification échouée
+                return FALSE;
+            }
+        } catch (PDOException $th) {
+            return NULL;
+            // throw $th;
+        }
+    }
 
     /*fonctions CRUD (CREATE, READ, UPDATE , DELETE)*/
 
