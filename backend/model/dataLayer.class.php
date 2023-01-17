@@ -12,7 +12,7 @@ class DataLayer{
         $var = 'mysql:host='.HOST.';dbname='.DB_NAME;
         try{
             $this->connexion = new PDO($var,DB_USER,DB_PASSWORD);
-            echo "la connexion à la base de données reussie<br>";
+            //echo "la connexion à la base de données reussie<br>";
             $this->connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
         } catch (PDOException $err){
