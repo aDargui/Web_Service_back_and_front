@@ -76,7 +76,7 @@ class DataLayer{
      * @return NULL exception déclenchée
      */
     function createUser(UserEntity $user){
-        $sql = "INSERT INTO user (sexe,pseudo,lastname,firstname,tel,email,password,description,adresse_facturation,adresse_livraison) VALUES (:sexe,:pseudo,:firstname,:lastname,:tel,:email,:password,:description,:adresse_facturation,:adresse_livraison)";
+        $sql = "INSERT INTO `".DB_NAME."`.`user` (sexe,pseudo,lastname,firstname,tel,email,password,description,adresse_facturation,adresse_livraison) VALUES (:sexe,:pseudo,:firstname,:lastname,:tel,:email,:password,:description,:adresse_facturation,:adresse_livraison)";
         try{
             $result = $this->connexion->prepare($sql);
             $data = $result->execute(array(
@@ -110,18 +110,18 @@ class DataLayer{
      * @return NULL exception déclenchée
      */
     function createCategory(CategoryEntity $category){
-        $sql = "INSERT INTO `category`(`name`) VALUES (:name)";
-        $result = $this->connexion->prepare($sql);
+        $sql = "INSERT INTO `".DB_NAME."`.`category`(`name`) VALUES (:name)";
+        try {
+            $result = $this->connexion->prepare($sql);
             $data = $result->execute(array(
                 ':name'=>$category->getName(),                
             ));
+            
             if($data){
                 return TRUE;
             }else{
                 return FALSE;
             }
-
-        try {
             
         } catch (PDOException $th) {
             return $th;
@@ -137,8 +137,9 @@ class DataLayer{
      * @return NULL exception déclenchée
      */
     function createProduct(ProductEntity $product){
-        $sql = "INSERT INTO `product`(`name`, `description`, `price`, `stock`, `category`, `image`) VALUES (:name,:description,:price,:stock,:category,:image)";
-        $result = $this->connexion->prepare($sql);
+        $sql = "INSERT INTO `".DB_NAME."`.`product`(`name`, `description`, `price`, `stock`, `category`, `image`) VALUES (:name,:description,:price,:stock,:category,:image)";
+        try {
+            $result = $this->connexion->prepare($sql);
             $data = $result->execute(array(
                 ':name'=>$product->getName(),
                 ':description'=>$product->getDescription(),
@@ -152,9 +153,6 @@ class DataLayer{
             }else{
                 return FALSE;
             }
-
-        try {
-            
         } catch (PDOException $th) {
             return $th;
         }
@@ -169,8 +167,9 @@ class DataLayer{
      * @return NULL exception déclenchée
      */
     function createOrder(OrdersEntity $order){
-        $sql = "INSERT INTO `orders`(`idUser`, `idProduct`, `quantity`, `price`) VALUES (:idUser,:idProduct,:quantity,:price)";
-        $result = $this->connexion->prepare($sql);
+        $sql = "INSERT INTO `".DB_NAME."`.`orders`(`idUser`, `idProduct`, `quantity`, `price`) VALUES (:idUser,:idProduct,:quantity,:price)";
+        try {
+            $result = $this->connexion->prepare($sql);
             $data = $result->execute(array(
                 ':idUser'=>$order->getIdUser(),
                 ':idProduct'=>$order->getIdProduct(),
@@ -182,8 +181,6 @@ class DataLayer{
             }else{
                 return FALSE;
             }
-
-        try {
             
         } catch (PDOException $th) {
             return $th;
