@@ -97,7 +97,8 @@ class DataLayer{
                 return FALSE;
             }
         }catch(PDOException $th){
-            return $th;
+            //return $th;
+            return NULL;
         }
     }
 
@@ -113,10 +114,10 @@ class DataLayer{
         $sql = "INSERT INTO `".DB_NAME."`.`category`(`name`) VALUES (:name)";
         try {
             $result = $this->connexion->prepare($sql);
+            
             $data = $result->execute(array(
                 ':name'=>$category->getName(),                
-            ));
-            
+            ));            
             if($data){
                 return TRUE;
             }else{
@@ -124,7 +125,8 @@ class DataLayer{
             }
             
         } catch (PDOException $th) {
-            return $th;
+            //return $th;
+            return NULL;
         }
     }
 
@@ -154,7 +156,8 @@ class DataLayer{
                 return FALSE;
             }
         } catch (PDOException $th) {
-            return $th;
+            //return $th;
+            return NULL;
         }
     }
 
@@ -183,7 +186,8 @@ class DataLayer{
             }
             
         } catch (PDOException $th) {
-            return $th;
+            //return $th;
+            return NULL;
         }
     }
 
