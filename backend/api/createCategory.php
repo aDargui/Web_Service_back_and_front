@@ -6,7 +6,7 @@ if(!isset($_REQUEST['name']) || empty($_REQUEST['name'])){
 }
     
 try {
-    $category = new categoryEntity();
+    $category = new CategoryEntity();
     
     $category->setName($_REQUEST['name']);
     
