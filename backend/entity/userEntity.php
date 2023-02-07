@@ -5,7 +5,7 @@
  * @author aDargui
  * site Web : adargui.fr
  */
-class userEntity{
+class UserEntity{
     protected ?int $idUser;
     protected ?string $pseudo;
     protected string $email;

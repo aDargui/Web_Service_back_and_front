@@ -8,7 +8,7 @@
  * @author aDargui
  * site Web : adargui.fr
  */
-class categoryEntity{
+class CategoryEntity{
     // avec '?' peux prendre la valeur null
 
     /**

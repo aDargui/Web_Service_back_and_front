@@ -5,7 +5,7 @@
  * @author aDargui
  * site Web : adargui.fr
  */
-class productEntity{
+class ProductEntity{
     protected ?int $idProduit;
     protected string $name;
     protected string $description;

@@ -5,7 +5,7 @@
  * @author aDargui
  * site Web : adargui.fr
  */
-class ordersEntity{
+class OrdersEntity{
     
     protected ?int $idOrder;
     protected int $idUser;
