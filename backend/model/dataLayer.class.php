@@ -170,7 +170,7 @@ class DataLayer{
      * @return NULL exception déclenchée
      */
     function createOrder(OrdersEntity $order){
-        $sql = "INSERT INTO `".DB_NAME."`.`orders`(`idUser`, `idProduct`, `quantity`, `price`) VALUES (:idUser,:idProduct,:quantity,:price)";
+        $sql = "INSERT INTO `".DB_NAME."`.`orders`(`id_user`, `id_product`, `quantity`, `price`) VALUES (:idUser,:idProduct,:quantity,:price)";
         try {
             $result = $this->connexion->prepare($sql);
             $data = $result->execute(array(
@@ -179,6 +179,7 @@ class DataLayer{
                 ':quantity'=>$order->getQuantity(),
                 ':price'=>$order->getPrice()
                 ));
+            
             if($data){
                 return TRUE;
             }else{
@@ -186,8 +187,8 @@ class DataLayer{
             }
             
         } catch (PDOException $th) {
-            //return $th;
-            return NULL;
+            return $th;
+            //return NULL;
         }
     }
 
